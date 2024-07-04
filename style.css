@@ -1,0 +1,132 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #caa568;
+}
+
+.screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    display: none;
+}
+
+.screen img {
+    max-width: 80%;
+    max-height: 50%;
+    margin-bottom: 20px;
+}
+
+.screen h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.screen button {
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #caa568;
+    background-color: #321f17;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.screen button:hover {
+    background-color: #543e2e;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 600px;
+    max-height: 800px;
+    border: 2px solid #000;
+    overflow: hidden;
+    background-color: #fff;
+    background-image: url('https://i.pinimg.com/564x/29/08/da/2908da7a2bbf31a56ba8de28e7507f06.jpg');
+    background-size: cover;
+    background-position: center;   
+    background-repeat: no-repeat;
+  
+}
+
+#startScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    z-index: 2;
+}
+
+#startImage {
+    max-width: 80%;
+    max-height: 50%;
+    margin-bottom: 20px;
+}
+
+#startButton {
+    padding: 10px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #caa568;
+    background-color: #321f17;
+    border-radius: 10px;
+}
+
+#gameScreen {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#timer {
+    position: absolute;
+    color: #caa568;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#bag {
+    position: absolute;
+    bottom: 10px;
+}
+
+#bagImage {
+    max-width: 100%;
+    max-height: 100%;
+    width: 70px;
+    height: 70px;
+}
+
+.object {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
