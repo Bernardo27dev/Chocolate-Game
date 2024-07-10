@@ -10,12 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let gameInterval;
     let timerIntervalId;
-    let objectsMissed = 0; // Contador para objetos perdidos
-    const maxObjectsMissed = 0; // Máximo de objetos que podem ser perdidos
-    const fastObjectSpeed = 10; // Velocidade do objeto rápido
-    const objectSpeed = 8; // Velocidade dos objetos normais
-    const spawnInterval = 1000; // Intervalo de spawn dos objetos em milissegundos (1 segundo)
-    const gameTime = 20; // Tempo total de jogo em segundos
+    let spawnIntervalId;
+    let objectsMissed = 0;
+    const maxObjectsMissed = 0;
+    const fastObjectSpeed = 10;
+    const objectSpeed = 8; 
+    const spawnInterval = 1000;
+    const gameTime = 20; 
 
     const objectImages = [
         'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF',
@@ -27,20 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const fastObjectImage = 'https://img.icons8.com/?size=100&id=31227&format=png&color=ccaa56';
 
     function startGame() {
-    
         objectsMissed = 0;
 
         clearInterval(gameInterval);
         clearInterval(timerIntervalId);
+        clearInterval(spawnIntervalId);
         clearObjects();
 
-    
         timerDisplay.textContent = `Tempo: ${gameTime} s`;
         startScreen.style.display = "none";
         gameScreen.style.display = "block";
         gameInterval = setInterval(gameLoop, 16);
         startTimer(gameTime);
-        setInterval(spawnObject, spawnInterval);
+        spawnIntervalId = setInterval(spawnObject, spawnInterval);
     }
 
     function startTimer(duration) {
@@ -57,10 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function endGame() {
         clearInterval(gameInterval);
         clearInterval(timerIntervalId);
+        clearInterval(spawnIntervalId);
         clearObjects();
         gameScreen.style.display = "none";
         scoreScreen.style.display = "block";
-        if (objectsMissed > 0) {
+        if (objectsMissed > maxObjectsMissed) {
             showMessage("Você perdeu!");
         } else {
             showMessage("Você venceu!");
@@ -75,11 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (Math.random() < 0.8) {
             randomIndex = Math.floor(Math.random() * objectImages.length);
             object.src = objectImages[randomIndex];
-        } else { 
+        } else {
             object.src = fastObjectImage;
         }
 
-        const size = 40; 
+        const size = 40;
         object.style.width = size + "px";
         object.style.height = size + "px";
 
@@ -88,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
         object.style.top = "0px";
         gameScreen.appendChild(object);
 
-        // Movimento do objeto
         let speed = object.src === fastObjectImage ? fastObjectSpeed : objectSpeed;
         let interval = setInterval(() => {
             object.style.top = object.offsetTop + speed + "px";
@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function gameLoop() {
-    
     }
 
     function checkCollision(obj1, obj2) {
@@ -128,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         objectsMissed = 0;
         scoreScreen.style.display = "none";
         startScreen.style.display = "flex";
-        clearObjects(); 
+        clearObjects();
     }
 
     function moveBag(event) {
@@ -149,6 +148,5 @@ document.addEventListener("DOMContentLoaded", () => {
     startButton.addEventListener("click", startGame);
     restartButton.addEventListener("click", restartGame);
     gameContainer.addEventListener("mousemove", moveBag);
-    gameContainer.addEventListener("touchmove", moveBag, { passive: false }); 
+    gameContainer.addEventListener("touchmove", moveBag, { passive: false });
 });
-
