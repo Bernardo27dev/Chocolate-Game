@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 preConfirm: async (name) => {
                     if (name.length >= 3) {
                         result = await sendData(name)
-                        alert(result)
+                        
                         if (result == 409) 
                             Swal.showValidationMessage(`Nickname já existente.`)
                         if (result == 500) 
