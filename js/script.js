@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const restartButton = document.getElementById("restartButton")
     const pointsDisplay = document.getElementById("points")
     const inputNickname = document.getElementById("inputNick")
-    const textInfoScore = document.getElementById("infoText")
     const bag = document.getElementById("bag")
 
     let gameInterval;
@@ -73,45 +72,102 @@ document.addEventListener("DOMContentLoaded", () => {
         clearObjects();
         gameScreen.style.display = "none";
         scoreScreen.style.display = "block";
-        if (objectsMissed > maxObjectsMissed) {
-            showMessage("Você perdeu!");
-        } else {
-            showMessage("Você venceu!");
-        }
+        showMessage("Fim de Jogo!");
     }
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function sendData(score, cheater) {
-        const name = inputNickname.value
-        const response = await fetch('http://localhost:3000/savingScore', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, score, cheater }), // Converter os dados em JSON
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            textInfoScore.innerText = "Nickname salvo! Reiniciando..."
-            sleep(5000).then(() => {
-                // Restarting game
-                scoreScreen.style.display = "none";
-                startScreen.style.display = "flex";
-                textInfoScore.innerText = "Digite seu NickName para salvar!"
-                clearObjects();
+    async function sendData(name) {
+        const cheater = usedCheat
+        const score = points
+        
+            const response = await fetch('http://localhost:3000/savingScore', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, score, cheater }), // Converter os dados em JSON
             });
-            
+            if (response.ok) {
+                
+                restartButton.innerText = "Resetando..."
+                restartButton.style.backgroundColor = "#1b0c01" 
+                restartButton.style.cursor = "not-allowed"
+                restartButton.disabled = true
+                
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Sua pontuação de " + score + " foi salva.",
+                    background: '#321f17',
+                    color: '#caa568',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    toast: true
+                }).then(() => {
+                    // Restarting game
+                    restartButton.innerText = "Voltar ao Início"
+                    restartButton.style.backgroundColor = "#321f17"
+                    restartButton.style.cursor = "auto"
+                    restartButton.disabled = false
+                    restartGame()
+                })
+            } else {
+                if (response.status == 409) {
+                    return response.status
+                } else {
+                    console.error('Erro ao salvar variável:', response.statusText)
+                    return response.status
+                }
+            }
 
-        } else {
-            if (response.status == 409)
-                textInfoScore.innerText = "Nickname já existente."
-            else
-                console.error('Erro ao salvar variável:', response.statusText)
-        }
+        
+    }
+
+    function restartGame() {
+        scoreScreen.style.display = "none"
+        startScreen.style.display = "flex"
+        clearObjects();
+    }
+
+    function optionSave() {
+        const score = points
+        if (score > 0)
+            Swal.fire({
+                title: "Salve sua pontuação de " + score + " pontos!",
+                input: "text",
+                inputAttributes: {
+                autocapitalize: "off",
+                placeholder: "Nickname",
+                autocomplete: "off"
+                },
+                showDenyButton: true,
+                confirmButtonText: "Salvar!",
+                showLoaderOnConfirm: true,
+                background: '#321f17',
+                color: '#caa568',
+                toast: true,
+                position: 'top-end',
+                preConfirm: async (name) => {
+                    if (name.length >= 3) {
+                        result = sendData(name)
+                        if (result == 409) 
+                            Swal.showValidationMessage(`Nickname já existente.`)
+                        if (result == 500) 
+                            Swal.showValidationMessage(`Por favor, chame o monitor responsável.`)
+                    } else {
+                        if (name.length < 1)
+                            Swal.showValidationMessage(`Digite algo antes de salvar.`)
+                        else
+                            Swal.showValidationMessage(`O Nickname precisa ter no mínimo 3 caracteres.`)
+                    }
+                },
+                denyButtonText: "Não Salvar"
+            }).then((result) => {
+                if (result.isDenied) {
+                    restartGame()
+                }
+            })
+        else
+            restartGame()
     }
 
     function spawnObject() {
@@ -146,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     endGame();
                 }
             }
-            if (checkCollision(object, bag)) {
+            if (checkCollision(object, bag) && objectsMissed == 0) {
                 clearInterval(interval);
                 object.remove();
                 upPoint(1);
@@ -174,12 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
         scoreScreen.querySelector("h2").textContent = msg;
     }
 
-    function restartGame() {
-        if (inputNickname.value != "") {
-            sendData(points, usedCheat)
-        }
-    }
-
     function moveBag(event) {
         let x;
         if (event.type === 'touchmove') {
@@ -196,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     startButton.addEventListener("click", startGame);
-    restartButton.addEventListener("click", restartGame);
+    restartButton.addEventListener("click", optionSave);
     gameContainer.addEventListener("mousemove", moveBag);
     gameContainer.addEventListener("touchmove", moveBag, { passive: false });
 
