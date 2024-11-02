@@ -5,6 +5,7 @@ const app = express()
 const Score = require('./Models/Score');
 const port = 3000
 const mongoUri = "mongodb://localhost:27017/testdb"
+const cors = require('cors')
 
 mongoose.connect(mongoUri)
     .then(() => {
@@ -14,6 +15,7 @@ mongoose.connect(mongoUri)
         console.error('Erro ao conectar: ', err)
     })
 
+app.use(cors())
 app.use(express.json())
 app.post('/savingScore', async (req, res) => {
     const { name, score, cheater } = req.body;
