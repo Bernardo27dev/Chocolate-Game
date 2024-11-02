@@ -5,4 +5,4 @@ Description: This is a project aimed at gaining knowledge and experience with th
 
 ## Pre-requirements
 **Express** v4.21.1 or higher\
-**Mongoose** v8.8.0 or higher\
+**Mongoose** v8.8.0 or higher
