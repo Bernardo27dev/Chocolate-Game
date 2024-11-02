@@ -1,7 +1,7 @@
 ## ClientManager
 Description: This is a project aimed at gaining knowledge and experience with the technologies acquired. The project is a basic Client Manager.
 
-> Status: Developing
+> Status: Final Tests
 
 ## Pre-requirements
 **Express** v4.21.1 or higher\
