@@ -111,12 +111,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     restartGame()
                 })
             } else {
-                if (response.status == 409) {
-                    return response.status
-                } else {
-                    console.error('Erro ao salvar variável:', response.statusText)
-                    return response.status
-                }
+                console.error('Erro ao salvar variável:', response.statusText)
+                return response.status
             }
 
         
@@ -148,7 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 position: 'top-end',
                 preConfirm: async (name) => {
                     if (name.length >= 3) {
-                        result = sendData(name)
+                        result = await sendData(name)
+                        alert(result)
                         if (result == 409) 
                             Swal.showValidationMessage(`Nickname já existente.`)
                         if (result == 500) 
