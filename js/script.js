@@ -1,22 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const gameContainer = document.getElementById("gameContainer");
-    const startScreen = document.getElementById("startScreen");
-    const gameScreen = document.getElementById("gameScreen");
-    const scoreScreen = document.getElementById("scoreScreen");
-    const startButton = document.getElementById("startButton");
-    const restartButton = document.getElementById("restartButton");
-    const timerDisplay = document.getElementById("timer");
-    const bag = document.getElementById("bag");
+    const gameContainer = document.getElementById("gameContainer")
+    const startScreen = document.getElementById("startScreen")
+    const gameScreen = document.getElementById("gameScreen")
+    const scoreScreen = document.getElementById("scoreScreen")
+    const startButton = document.getElementById("startButton")
+    const restartButton = document.getElementById("restartButton")
+    const pointsDisplay = document.getElementById("points")
+    const inputNickname = document.getElementById("inputNick")
+    const textInfoScore = document.getElementById("infoText")
+    const bag = document.getElementById("bag")
 
     let gameInterval;
-    let timerIntervalId;
+    // let timerIntervalId;
     let spawnIntervalId;
     let objectsMissed = 0;
+    let points = 0;
     const maxObjectsMissed = 0;
-    const fastObjectSpeed = 10;
-    const objectSpeed = 8; 
+    let fastObjectSpeed = 10;
+    let objectSpeed = 8; 
     const spawnInterval = 1000;
-    const gameTime = 20; 
+    let usedCheat = false
+    // const gameTime = 20; 
 
     const objectImages = [
         'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF',
@@ -28,35 +32,43 @@ document.addEventListener("DOMContentLoaded", () => {
     const fastObjectImage = 'https://img.icons8.com/?size=100&id=31227&format=png&color=ccaa56';
 
     function startGame() {
+        fastObjectSpeed = 10;
+        objectSpeed = 8; 
         objectsMissed = 0;
+        points = 0;
 
         clearInterval(gameInterval);
-        clearInterval(timerIntervalId);
+        // clearInterval(timerIntervalId);
         clearInterval(spawnIntervalId);
         clearObjects();
 
-        timerDisplay.textContent = `Tempo: ${gameTime} s`;
+        pointsDisplay.textContent = `Pontuação: ${points}`;
         startScreen.style.display = "none";
         gameScreen.style.display = "block";
         gameInterval = setInterval(gameLoop, 16);
-        startTimer(gameTime);
+        // startTimer(gameTime);
         spawnIntervalId = setInterval(spawnObject, spawnInterval);
     }
 
-    function startTimer(duration) {
-        let timer = duration;
-        timerIntervalId = setInterval(() => {
-            timer--;
-            timerDisplay.textContent = `Tempo: ${timer} s`;
-            if (timer <= 0) {
-                endGame();
-            }
-        }, 1000);
+    // function startTimer(duration) {
+    //     let timer = duration;
+    //     timerIntervalId = setInterval(() => {
+    //         timer--;
+    //         pointsDisplay.textContent = `Tempo: ${timer} s`;
+    //         if (timer <= 0) {
+    //             endGame();
+    //         }
+    //     }, 1000);
+    // }
+
+    function upPoint(ToAdd){
+        points += ToAdd
+        pointsDisplay.textContent = `Pontuação: ${points}`;
     }
 
     function endGame() {
         clearInterval(gameInterval);
-        clearInterval(timerIntervalId);
+        // clearInterval(timerIntervalId);
         clearInterval(spawnIntervalId);
         clearObjects();
         gameScreen.style.display = "none";
@@ -65,6 +77,40 @@ document.addEventListener("DOMContentLoaded", () => {
             showMessage("Você perdeu!");
         } else {
             showMessage("Você venceu!");
+        }
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function sendData(score, cheater) {
+        const name = inputNickname.value
+        const response = await fetch('http://localhost:3000/savingScore', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, score, cheater }), // Converter os dados em JSON
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            textInfoScore.innerText = "Nickname salvo! Reiniciando..."
+            sleep(5000).then(() => {
+                // Restarting game
+                scoreScreen.style.display = "none";
+                startScreen.style.display = "flex";
+                textInfoScore.innerText = "Digite seu NickName para salvar!"
+                clearObjects();
+            });
+            
+
+        } else {
+            if (response.status == 409)
+                textInfoScore.innerText = "Nickname já existente."
+            else
+                console.error('Erro ao salvar variável:', response.statusText)
         }
     }
 
@@ -103,6 +149,11 @@ document.addEventListener("DOMContentLoaded", () => {
             if (checkCollision(object, bag)) {
                 clearInterval(interval);
                 object.remove();
+                upPoint(1);
+                if (points % 10 == 0) {
+                    objectSpeed += 5
+                    fastObjectSpeed += 5
+                }
             }
         }, 16);
     }
@@ -124,10 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function restartGame() {
-        objectsMissed = 0;
-        scoreScreen.style.display = "none";
-        startScreen.style.display = "flex";
-        clearObjects();
+        if (inputNickname.value != "") {
+            sendData(points, usedCheat)
+        }
     }
 
     function moveBag(event) {
@@ -149,4 +199,34 @@ document.addEventListener("DOMContentLoaded", () => {
     restartButton.addEventListener("click", restartGame);
     gameContainer.addEventListener("mousemove", moveBag);
     gameContainer.addEventListener("touchmove", moveBag, { passive: false });
+
+
+    let sequenciaDeTeclas = [];
+    const sequenciaDesejada = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+
+    let limparSequencia;
+
+    document.addEventListener('keydown', (event) => {
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+            sequenciaDeTeclas.push(event.key);
+
+            if (sequenciaDeTeclas.length > sequenciaDesejada.length) {
+                sequenciaDeTeclas.shift();
+            }
+
+            if (JSON.stringify(sequenciaDeTeclas) === JSON.stringify(sequenciaDesejada)) {
+                console.log('Cheat actived!');
+                objectSpeed += -3
+                fastObjectSpeed += -3
+                usedCheat = true
+            }
+
+            clearTimeout(limparSequencia);
+            limparSequencia = setTimeout(() => {
+                sequenciaDeTeclas = [];
+            }, 1000);
+        }
+    });
+
 });
+
