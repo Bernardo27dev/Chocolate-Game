@@ -19,16 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let objectSpeed = 8; 
     const spawnInterval = 1000;
     let usedCheat = false
-    // const gameTime = 20; 
 
     const objectImages = [
-        'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF',
-        'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF',
-        'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF',
-        'https://img.icons8.com/?size=100&id=31227&format=png&color=FFFFFF'
+        './assets/memoria_ram2.png',
+        './assets/memoria_ram2.png',
+        './assets/memoria_ram2.png',
+        './assets/memoria_ram2.png'
     ];
 
-    const fastObjectImage = 'https://img.icons8.com/?size=100&id=31227&format=png&color=ccaa56';
+    const fastObjectImage = './assets/memoria_ram.png';
 
     function startGame() {
         fastObjectSpeed = 10;
@@ -37,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         points = 0;
 
         clearInterval(gameInterval);
-        // clearInterval(timerIntervalId);
         clearInterval(spawnIntervalId);
         clearObjects();
 
@@ -45,20 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
         startScreen.style.display = "none";
         gameScreen.style.display = "block";
         gameInterval = setInterval(gameLoop, 16);
-        // startTimer(gameTime);
         spawnIntervalId = setInterval(spawnObject, spawnInterval);
     }
-
-    // function startTimer(duration) {
-    //     let timer = duration;
-    //     timerIntervalId = setInterval(() => {
-    //         timer--;
-    //         pointsDisplay.textContent = `Tempo: ${timer} s`;
-    //         if (timer <= 0) {
-    //             endGame();
-    //         }
-    //     }, 1000);
-    // }
 
     function upPoint(ToAdd){
         points += ToAdd
@@ -67,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function endGame() {
         clearInterval(gameInterval);
-        // clearInterval(timerIntervalId);
         clearInterval(spawnIntervalId);
         clearObjects();
         gameScreen.style.display = "none";
