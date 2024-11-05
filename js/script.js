@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let objectSpeed = 8; 
     const spawnInterval = 1000;
     let usedCheat = false
+    let quantityUsedCheat = 0;
 
     const objectImages = [
         './assets/memoria_ram2.png',
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function endGame() {
         clearInterval(gameInterval);
         clearInterval(spawnIntervalId);
+        quantityUsedCheat = 0;
         clearObjects();
         gameScreen.style.display = "none";
         scoreScreen.style.display = "block";
@@ -235,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let sequenciaDeTeclas = [];
     const sequenciaDesejada = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
-
+cmd
     let limparSequencia;
 
     document.addEventListener('keydown', (event) => {
@@ -247,10 +249,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             if (JSON.stringify(sequenciaDeTeclas) === JSON.stringify(sequenciaDesejada)) {
-                console.log('Cheat actived!');
-                objectSpeed += -3
-                fastObjectSpeed += -3
-                usedCheat = true
+                if (objectSpeed > 5 && quantityUsedCheat < 3) {
+                    console.log('Cheat actived!');
+                    objectSpeed += -3
+                    fastObjectSpeed += -3
+                    usedCheat = true
+                }
             }
 
             clearTimeout(limparSequencia);
