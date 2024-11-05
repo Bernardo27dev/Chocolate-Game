@@ -4,7 +4,7 @@ const path = require("path")
 const app = express()
 const Score = require('./Models/Score');
 const port = 3000
-const mongoUri = "mongodb+srv://Computer:12162007Vv@cluster0.lka39.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const mongoUri = "mongodb://localhost:27017/score_db"
 const cors = require('cors')
 
 mongoose.connect(mongoUri)
