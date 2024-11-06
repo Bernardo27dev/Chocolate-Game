@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (points == 3 && quantityUsedCheat == 0) {
             let timerInterval;
             Swal.fire({
-                title: "<span style='font-size: 24px;'>Psst! Use o código JBI...</span>",
+                title: "<span style='font-size: 24px;'>Psst! Use o código <span style='font-size: 28px;'>J.B.I.</span></span>",
                 timer: 6000,
                 timerProgressBar: true,
                 showConfirmButton: false,
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Sua pontuação de " + score + " foi salva.",
+                    title: (score > 1) ? "Sua pontuação de " + score + " pontos, foi salva." : "Sua pontuação de " + score + " ponto, foi salva.",
                     background: '#781dff',
                     color: '#ffffff',
                     showConfirmButton: false,
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const score = points
         if (score > 0)
             Swal.fire({
-                title: "Salve sua pontuação de " + score + " pontos!",
+                title: (score > 1) ? "<span style='font-size: 24px;'>Salve sua pontuação de <br><span style='font-size: 26px;'>" + score + " pontos!</span></span>" : "<span style='font-size: 24px;'>Salve sua pontuação de <br><span style='font-size: 26px;'>" + score + " ponto...</span></span>",
                 input: "text",
                 inputAttributes: {
                 autocapitalize: "off",
@@ -279,8 +279,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 inAction = true
                 setTimeout(() => { 
                     quantityUsedCheat == 3 ? cheatsCounter.style.color = "#ffff00" : cheatsCounter.style.color = "#ffffff"
-                    cheatsCounter.setAttribute('data-text', 'JBI: ' + quantityUsedCheat)
-                    cheatsCounter.innerText = 'JBI: ' + quantityUsedCheat
+                    cheatsCounter.setAttribute('data-text', 'J.B.I. : ' + quantityUsedCheat)
+                    cheatsCounter.innerText = 'J.B.I. : ' + quantityUsedCheat
                 }, 2000)              
                 console.log('Cheat actived!')
                 objectSpeed += -3
@@ -310,30 +310,30 @@ document.addEventListener("DOMContentLoaded", () => {
                         cheatsCounter.innerText = 'ERR0R!'
                         setTimeout(() => {
                             quantityUsedCheat++   
-                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
-                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                            cheatsCounter.setAttribute('data-text', 'J.B.I. : Limite Excedido.')
+                            cheatsCounter.innerText = 'J.B.I. : Limite Excedido.'
                         }, 2000)
                     } else if (quantityUsedCheat == 5) {
                         cheatsCounter.setAttribute('data-text', '3rR0r!')
                         cheatsCounter.innerText = '3rR0r!'
                         setTimeout(() => {
                             quantityUsedCheat++
-                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
-                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                            cheatsCounter.setAttribute('data-text', 'J.B.I. : Limite Excedido.')
+                            cheatsCounter.innerText = 'J.B.I. : Limite Excedido.'
                         }, 2000)
                     } else if (quantityUsedCheat == 6) {
                         cheatsCounter.setAttribute('data-text', 'msgerrorbox :(')
                         cheatsCounter.innerText = 'msgerrorbox :('
                         setTimeout(() => {
                             quantityUsedCheat++
-                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
-                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                            cheatsCounter.setAttribute('data-text', 'J.B.I. : Limite Excedido.')
+                            cheatsCounter.innerText = 'J.B.I. : Limite Excedido.'
                         }, 2000)
                     } else {
                         quantityUsedCheat++
                         cheatsCounter.style.color = "red"
-                        cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
-                        cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                        cheatsCounter.setAttribute('data-text', 'J.B.I. : Limite Excedido.')
+                        cheatsCounter.innerText = 'J.B.I. : Limite Excedido.'
                     }
                 }
             }
