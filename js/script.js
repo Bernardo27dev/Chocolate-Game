@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pointsDisplay = document.getElementById("points")
     const inputNickname = document.getElementById("inputNick")
     const bag = document.getElementById("bag")
+    const cheatsCounter = document.getElementById("cheatCounter")
 
     let gameInterval;
     // let timerIntervalId;
@@ -48,6 +49,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function upPoint(ToAdd){
+        if (points == 3) {
+            let timerInterval;
+            Swal.fire({
+                title: "<span style='font-size: 24px;'>Psst! Use o código JBI...</span>",
+                timer: 6000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#781dff',
+                color: '#ffffff',
+                toast: true,
+                position: 'top-end',
+                willClose: () => {
+                    clearInterval(timerInterval);
+                }
+            })
+        }
         points += ToAdd
         pointsDisplay.textContent = `Pontuação: ${points}`;
     }
@@ -59,6 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
         clearObjects();
         gameScreen.style.display = "none";
         scoreScreen.style.display = "block";
+        cheatsCounter.setAttribute('data-text', '')
+        cheatsCounter.innerText = ''
+        cheatsCounter.style.color = '#fff'
         showMessage("Fim de Jogo!");
     }
 
@@ -76,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 
                 restartButton.innerText = "Resetando..."
-                restartButton.style.backgroundColor = "#1b0c01" 
+                restartButton.style.backgroundColor = "#340776" 
                 restartButton.style.cursor = "not-allowed"
                 restartButton.disabled = true
                 
@@ -84,16 +104,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     position: "top-end",
                     icon: "success",
                     title: "Sua pontuação de " + score + " foi salva.",
-                    background: '#321f17',
-                    color: '#caa568',
+                    background: '#781dff',
+                    color: '#ffffff',
                     showConfirmButton: false,
                     timer: 3000,
                     toast: true
                 }).then(() => {
                     // Restarting game
                     restartButton.innerText = "Voltar ao Início"
-                    restartButton.style.backgroundColor = "#321f17"
-                    restartButton.style.cursor = "auto"
+                    restartButton.style.backgroundColor = "#781dff"
+                    restartButton.style.cursor = "pointer"
                     restartButton.disabled = false
                     restartGame()
                 })
@@ -123,10 +143,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 autocomplete: "off"
                 },
                 showDenyButton: true,
+                inputAutoFocus: true,
                 confirmButtonText: "Salvar!",
                 showLoaderOnConfirm: true,
-                background: '#321f17',
-                color: '#caa568',
+                background: '#781dff',
+                color: '#ffffff',
                 toast: true,
                 position: 'top-end',
                 preConfirm: async (name) => {
@@ -236,32 +257,92 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     let sequenciaDeTeclas = [];
-    const sequenciaDesejada = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
-cmd
+    const sequenciaDesejada = ['j', 'b', 'i'];
     let limparSequencia;
+    let inAction = false;
 
     document.addEventListener('keydown', (event) => {
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
-            sequenciaDeTeclas.push(event.key);
+        try {
+            if (inAction == false) 
+                sequenciaDeTeclas.push(event.key.toLowerCase());
+        } catch {
+            if (inAction == false) 
+                sequenciaDeTeclas.push(event.key);
+        }
 
-            if (sequenciaDeTeclas.length > sequenciaDesejada.length) {
-                sequenciaDeTeclas.shift();
-            }
+        if (sequenciaDeTeclas.length > sequenciaDesejada.length) {
+            sequenciaDeTeclas.shift();
+        }
 
-            if (JSON.stringify(sequenciaDeTeclas) === JSON.stringify(sequenciaDesejada)) {
-                if (objectSpeed > 5 && quantityUsedCheat < 3) {
-                    console.log('Cheat actived!');
-                    objectSpeed += -3
-                    fastObjectSpeed += -3
-                    usedCheat = true
+        if (JSON.stringify(sequenciaDeTeclas) === JSON.stringify(sequenciaDesejada)) {
+            if (objectSpeed > 5 && quantityUsedCheat < 3) { 
+                inAction = true
+                setTimeout(() => { 
+                    quantityUsedCheat == 3 ? cheatsCounter.style.color = "#ffff00" : cheatsCounter.style.color = "#ffffff"
+                    cheatsCounter.setAttribute('data-text', 'JBI: ' + quantityUsedCheat)
+                    cheatsCounter.innerText = 'JBI: ' + quantityUsedCheat
+                }, 2000)              
+                console.log('Cheat actived!')
+                objectSpeed += -3
+                fastObjectSpeed += -3
+                usedCheat = true
+                quantityUsedCheat++
+                setTimeout(() => {
+                    inAction = false
+                }, 5000)
+                cheatsCounter.setAttribute('data-text', 'VELOCIDADE R3DUZ1D4')
+                cheatsCounter.innerText = 'VELOCIDADE REDUZIDA'
+                cheatsCounter.style.color = "red"
+            } else {
+                if (quantityUsedCheat >= 3) {
+                    inAction = true
+                    setTimeout(() => {
+                        inAction = false
+                    }, 3000)
+                    if (quantityUsedCheat > 7) {
+                        objectSpeed += 5
+                        fastObjectSpeed += 5
+                        quantityUsedCheat++
+                        cheatsCounter.setAttribute('data-text', 'FATAL 3RR0R!')
+                        cheatsCounter.innerText = 'FATAL 3RR0R!'
+                    } else if (quantityUsedCheat == 4) {
+                        cheatsCounter.setAttribute('data-text', 'ERROR!')
+                        cheatsCounter.innerText = 'ERR0R!'
+                        setTimeout(() => {
+                            quantityUsedCheat++   
+                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
+                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                        }, 2000)
+                    } else if (quantityUsedCheat == 5) {
+                        cheatsCounter.setAttribute('data-text', '3rR0r!')
+                        cheatsCounter.innerText = '3rR0r!'
+                        setTimeout(() => {
+                            quantityUsedCheat++
+                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
+                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                        }, 2000)
+                    } else if (quantityUsedCheat == 6) {
+                        cheatsCounter.setAttribute('data-text', 'msgerrorbox :(')
+                        cheatsCounter.innerText = 'msgerrorbox :('
+                        setTimeout(() => {
+                            quantityUsedCheat++
+                            cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
+                            cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                        }, 2000)
+                    } else {
+                        quantityUsedCheat++
+                        cheatsCounter.style.color = "red"
+                        cheatsCounter.setAttribute('data-text', 'JBI: Limite Excedido.')
+                        cheatsCounter.innerText = 'JBI: Limite Excedido.'
+                    }
                 }
             }
-
-            clearTimeout(limparSequencia);
-            limparSequencia = setTimeout(() => {
-                sequenciaDeTeclas = [];
-            }, 1000);
         }
+
+        clearTimeout(limparSequencia);
+        limparSequencia = setTimeout(() => {
+            sequenciaDeTeclas = [];
+        }, 1000);
     });
 
 });
