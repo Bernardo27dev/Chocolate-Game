@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function upPoint(ToAdd){
-        if (points == 3) {
+        if (points == 3 && quantityUsedCheat == 0) {
             let timerInterval;
             Swal.fire({
                 title: "<span style='font-size: 24px;'>Psst! Use o código JBI...</span>",
