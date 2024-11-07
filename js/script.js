@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let objectsMissed = 0;
     let points = 0;
     const maxObjectsMissed = 0;
-    let fastObjectSpeed = 10;
-    let objectSpeed = 8; 
+    let fastObjectSpeed = 5;
+    let objectSpeed = 3; 
     const spawnInterval = 1000;
     let usedCheat = false
     let quantityUsedCheat = 0;
@@ -212,8 +212,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 object.remove();
                 upPoint(1);
                 if (points % 10 == 0) {
-                    objectSpeed += 5
-                    fastObjectSpeed += 5
+                    objectSpeed += 1
+                    fastObjectSpeed += 1
                 }
             }
         }, 16);
