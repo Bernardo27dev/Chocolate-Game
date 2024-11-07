@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputNickname = document.getElementById("inputNick")
     const bag = document.getElementById("bag")
     const cheatsCounter = document.getElementById("cheatCounter")
+    const levelsCounter = document.getElementById("levels")
 
     let gameInterval;
-    // let timerIntervalId;
     let spawnIntervalId;
     let objectsMissed = 0;
     let points = 0;
@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let fastObjectSpeed = 5;
     let objectSpeed = 3; 
     const spawnInterval = 1000;
+    let level = 1;
     let usedCheat = false
     let quantityUsedCheat = 0;
 
@@ -31,9 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fastObjectImage = './assets/memoria_ram.png';
 
+    
     function startGame() {
         fastObjectSpeed = 10;
-        objectSpeed = 8; 
+        objectSpeed = 8;
         objectsMissed = 0;
         points = 0;
 
@@ -67,6 +69,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         points += ToAdd
         pointsDisplay.textContent = `Pontuação: ${points}`;
+        if (points > 1 && points % 20 == 0) {
+            level += 1;
+            console.log(level);
+            levelsCounter.innerText = 'Level : ' + level
+        }
     }
 
     function endGame() {
@@ -281,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     quantityUsedCheat == 3 ? cheatsCounter.style.color = "#ffff00" : cheatsCounter.style.color = "#ffffff"
                     cheatsCounter.setAttribute('data-text', 'J.B.I. : ' + quantityUsedCheat)
                     cheatsCounter.innerText = 'J.B.I. : ' + quantityUsedCheat
-                }, 2000)              
+                }, 2000)             
                 console.log('Cheat actived!')
                 objectSpeed += -3
                 fastObjectSpeed += -3
