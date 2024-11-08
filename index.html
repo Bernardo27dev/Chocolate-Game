@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/script.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <audio id="music" src="./assets/sounds/main.mp3" type="audio/mpeg" loop></audio>
+    <audio id="fxsound" src="./assets/sounds/defeat.MP3" type="audio/mpeg"></audio>
 </head>
 
 <body>
@@ -19,7 +21,7 @@
         </div>
         <div id="gameScreen">
             <div id="points">Pontuação: 0</div>
-            <div id="levels" class="level layers" data-text="">Level : 1</div>
+            <div id="levels">Level : 1</div>
             <h2 id="cheatCounter" class="glitch glitch layers" data-text=""></h2>
             <div id="bag">
                 <img id="bagImage" src="./assets/duke.png" alt="Bag">

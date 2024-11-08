@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const bag = document.getElementById("bag")
     const cheatsCounter = document.getElementById("cheatCounter")
     const levelsCounter = document.getElementById("levels")
+    const sound1 = document.getElementById("music")
+    const sound2 = document.getElementById("fxsound")
 
     let gameInterval;
     let spawnIntervalId;
@@ -46,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
         pointsDisplay.textContent = `Pontuação: ${points}`;
         startScreen.style.display = "none";
         gameScreen.style.display = "block";
+        levelsCounter.innerText = 'Level : ' + level
+        sound1.play()
         gameInterval = setInterval(gameLoop, 16);
         spawnIntervalId = setInterval(spawnObject, spawnInterval);
     }
@@ -71,7 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
         pointsDisplay.textContent = `Pontuação: ${points}`;
         if (points > 1 && points % 20 == 0) {
             level += 1;
-            console.log(level);
             levelsCounter.innerText = 'Level : ' + level
         }
     }
@@ -82,6 +85,11 @@ document.addEventListener("DOMContentLoaded", () => {
         quantityUsedCheat = 0;
         clearObjects();
         gameScreen.style.display = "none";
+        sound1.pause()
+        sound1.currentTime = 0;  
+        sound2.play()
+        level = 1
+        levelsCounter.innerText = 'Level : ' + level
         scoreScreen.style.display = "block";
         cheatsCounter.setAttribute('data-text', '')
         cheatsCounter.innerText = ''

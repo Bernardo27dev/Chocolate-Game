@@ -135,6 +135,15 @@ html {
     font-weight: bold;
 }
 
+#levels {
+  position: absolute;
+  color: #781dff;
+  top: 45px;
+  right: 10px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
 #bag {
     position: absolute;
     bottom: 10px;
@@ -159,7 +168,7 @@ html {
 
 
 .glitch {
-    top: 25px;
+    top: 50px;
     right: 10px;
     font-size: 25px;
     line-height: 1;
